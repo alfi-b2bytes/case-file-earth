@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640" role="img" aria-label="Case File Earth: The Missing Rain">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#050816"/><stop offset="1" stop-color="#0b1d3a"/>
+    </linearGradient>
+    <radialGradient id="earth" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#1e6fd9"/><stop offset="0.7" stop-color="#0d3b7a"/><stop offset="1" stop-color="#071a38"/>
+    </radialGradient>
+    <linearGradient id="trend" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#5ad1ff"/><stop offset="1" stop-color="#ffb347"/>
+    </linearGradient>
+  </defs>
+  <rect width="1280" height="640" fill="url(#bg)"/>
+  <g fill="#ffffff" opacity="0.7">
+    <circle cx="90" cy="70" r="1.6"/><circle cx="240" cy="140" r="1.2"/><circle cx="420" cy="50" r="1.8"/>
+    <circle cx="610" cy="110" r="1.2"/><circle cx="780" cy="45" r="1.6"/><circle cx="980" cy="95" r="1.2"/>
+    <circle cx="1150" cy="60" r="1.8"/><circle cx="1210" cy="190" r="1.2"/><circle cx="60" cy="300" r="1.4"/>
+    <circle cx="340" cy="230" r="1.2"/><circle cx="880" cy="190" r="1.4"/>
+  </g>
+  <circle cx="1130" cy="520" r="330" fill="url(#earth)"/>
+  <circle cx="1130" cy="520" r="330" fill="none" stroke="#5ad1ff" stroke-opacity="0.35" stroke-width="3"/>
+  <g stroke="#9bdcff" stroke-opacity="0.55" stroke-width="2" stroke-linecap="round">
+    <line x1="940" y1="240" x2="928" y2="272"/><line x1="1000" y1="215" x2="988" y2="247"/>
+    <line x1="1060" y1="205" x2="1048" y2="237"/><line x1="1120" y1="200" x2="1108" y2="232"/>
+  </g>
+  <polyline points="900,400 960,385 1010,420 1060,380 1110,435 1160,410 1210,450 1260,440" fill="none" stroke="#ffb347" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="80" y="170" font-family="Helvetica, Arial, sans-serif" font-size="22" fill="#5ad1ff">NASA SPACE APPS 2026 · EARTH SYSTEM TREND DETECTIVE</text>
+  <text x="80" y="290" font-family="Helvetica, Arial, sans-serif" font-size="88" font-weight="700" fill="#ffffff">Case File Earth</text>
+  <text x="80" y="380" font-family="Helvetica, Arial, sans-serif" font-size="56" fill="#5ad1ff">The Missing Rain</text>
+  <text x="80" y="450" font-family="Helvetica, Arial, sans-serif" font-size="28" fill="#c9d6ea">Interrogate decades of NASA Earth data.</text>
+  <text x="80" y="490" font-family="Helvetica, Arial, sans-serif" font-size="28" fill="#c9d6ea">Get a statistical verdict, in plain language.</text>
+  <text x="80" y="580" font-family="Helvetica, Arial, sans-serif" font-size="22" fill="#7f93b2">Team B2Bytes  ·  Apache 2.0  ·  Open source</text>
+</svg>
