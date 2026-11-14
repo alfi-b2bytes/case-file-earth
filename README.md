@@ -15,7 +15,7 @@
 
 Built by Team B2Bytes for the NASA Space Apps Challenge 2026 (Universal Event), challenge *Be An Earth System Trend Detective!*
 
-> Status, stated plainly: this repository was created on 14 Nov 2026, during the hackathon. The sections below describe the scope we are building. Everything is marked **Planned** until the code is in this repo. Nothing here is claimed as finished before it is.
+> Status, stated plainly: this repository was created on 14 Nov 2026, during the hackathon. **Built** so far: the trend analysis in `analysis/` and its results (see the verdict below). The interactive case-file app is still **Planned**. Nothing is claimed as finished before it is.
 
 *Resumen en español al final.*
 
@@ -36,9 +36,32 @@ Earth observation has the answer. Decades of satellite and model data exist, fre
 
 ### The flagship case: "The Missing Rain"
 
-Central Chile has lived through a long dry spell that people call a mega-drought. It is local, it is measurable, and the same pattern matters in other Mediterranean-type regions around the world. The first case file asks one question of NASA precipitation data for the Santiago and Valparaiso area: **is the rain really missing, and is the change statistically significant?**
+Central Chile has lived through a long dry spell that people call a mega-drought. It is local, it is measurable, and the same pattern matters in other Mediterranean-type regions around the world. The first case file asks one question of NASA precipitation data for a Santiago grid point (Valparaiso not computed yet): **is the rain really missing, and is the change statistically significant?**
 
-We do not state the answer here. The tool computes it, from the data, in the open. Whatever the verdict is, that is what we publish.
+**Verdict (computed, 14 Nov 2026):** the rain is missing, and the drop is statistically significant.
+
+Data: NASA POWER monthly point data (MERRA-2 based) at -33.45, -70.67 (Santiago), 1981-2025, 540 months, precipitation `PRECTOTCORR` converted to mm/month by days in month. Test: Mann-Kendall with Sen's slope on annual totals (n=45), rule p < 0.05 strong evidence.
+
+| Series | Change per decade (Sen) | 95% CI | p | Verdict |
+|---|---|---|---|---|
+| Annual precipitation | -48.9 mm (-16.6% of the mean) | -78.7 to -24.6 mm | <0.001 | strong evidence |
+| Autumn (MAM) | -15.1 mm (-21.4%) | -24.2 to -6.8 mm | 0.0015 | strong evidence |
+| Winter (JJA) | -26.8 mm (-17.2%) | -42.3 to -8.6 mm | 0.006 | strong evidence |
+| Spring (SON) | -6.1 mm (-14.1%) | -11.5 to -1.3 mm | 0.012 | strong evidence |
+| Summer (DJF) | -0.9 mm (-3.8%) | -3.5 to +2.2 mm | 0.59 | no proven trend |
+
+- Mean annual precipitation: 350 mm in 1981-2010 vs 183 mm in 2011-2025 (-48%; Welch t-test p < 0.001, Mann-Whitney p < 0.001).
+- Driest years in the record: 2022 (96 mm), 2019 (107 mm), 2024 (120 mm). Wettest: 1997 (731 mm), 1987 (661 mm), 2002 (659 mm).
+- Control variable, same point: annual mean temperature (T2M) rose +0.17 C per decade (p = 0.012). Temperature change is small and steady; the precipitation signal is much larger and comes mostly from autumn and winter.
+- Linear check (OLS) agrees: -53.8 mm per decade, p = 0.001.
+
+Charts: `charts/01_annual_precip.png`, `charts/02_annual_temp_control.png`, `charts/03_seasonal_change.png`. Full numbers: `results/results.json`. Reproduce: `python analysis/trend_analysis.py data/data_power_santiago_1981_2025.csv` (needs numpy, scipy, matplotlib).
+
+**What this does not show**
+- One model grid point, not station data. POWER precipitation here comes from MERRA-2 reanalysis, so this is not an independent validation against rain gauges or other satellites.
+- The record starts with several very wet years (1987, 1997, 2002). We did not test how much they drive the slope.
+- Mann-Kendall assumes little autocorrelation. Lag-1 autocorrelation of annual residuals is small (-0.05 for annual precipitation, up to 0.22 for autumn), but the pooled monthly-anomaly test in `results.json` ignores it and is indicative only.
+- A significant trend shows that something changed, not why.
 
 ---
 
@@ -52,10 +75,10 @@ Status key: **Built** = in this repo and working. **Planned** = in scope for the
 | Monthly time series for a chosen point from the NASA POWER API (no API key) | Planned |
 | Variables: precipitation (`PRECTOTCORR`), temperature (`T2M`), humidity (`QV2M`), wind (`WS10M`) | Planned |
 | Seasonal cycle removed (monthly anomalies) before testing | Planned |
-| Trend tests: linear fit with t-test and 95% confidence interval, Mann-Kendall with Sen's slope | Planned |
+| Trend tests: Mann-Kendall with Sen's slope and 95% CI, OLS check (analysis script, Santiago case) | Built (script); in-app version Planned |
 | Plain-language verdict card, with a one-line definition of each variable | Planned |
-| Two preloaded demo cases: "The Missing Rain" (central Chile) and a temperature case | Planned |
-| Frozen offline copy of the demo data, so demos work if an API is down | Planned |
+| Two demo cases: "The Missing Rain" and a temperature control: computed in `results/` | Built (results); in-app Planned |
+| Frozen offline copy of the demo data (`data/`) | Built |
 | CSV download of the evidence | Planned |
 | Methods and sources page, including the declaration of AI use | Planned |
 | English interface, Spanish and English subtitles on the demo video | Planned |
@@ -121,4 +144,4 @@ Apache License 2.0. See [LICENSE](LICENSE). This project is open source and free
 
 ## Resumen en español
 
-**Case File Earth: El caso de la lluvia perdida.** Una herramienta abierta donde cualquier persona abre un "caso" sobre su lugar del planeta, la herramienta consulta décadas de datos de la NASA (API NASA POWER) y entrega un veredicto estadístico en lenguaje simple: cuánto cambió, y si el cambio es significativo (Mann-Kendall, pendiente de Sen, t-test con intervalo de confianza). El caso insignia es la sequía prolongada de Chile central. Hecho por el equipo B2Bytes para NASA Space Apps 2026, reto *Earth System Trend Detective*. Estado: en desarrollo; todo lo descrito está marcado como "Planned" hasta que el código esté en este repositorio.
+**Case File Earth: El caso de la lluvia perdida. **Resultado calculado (Santiago, 1981-2025, NASA POWER):** la precipitación anual cayó unos 49 mm por década (-16.6%, p < 0.001; promedio 350 mm en 1981-2010 vs 183 mm en 2011-2025), con evidencia fuerte en otoño, invierno y primavera y sin tendencia probada en verano. Limitación: un solo punto de reanálisis MERRA-2, no es validación independiente.** Una herramienta abierta donde cualquier persona abre un "caso" sobre su lugar del planeta, la herramienta consulta décadas de datos de la NASA (API NASA POWER) y entrega un veredicto estadístico en lenguaje simple: cuánto cambió, y si el cambio es significativo (Mann-Kendall, pendiente de Sen, t-test con intervalo de confianza). El caso insignia es la sequía prolongada de Chile central. Hecho por el equipo B2Bytes para NASA Space Apps 2026, reto *Earth System Trend Detective*. Estado: el análisis está construido; la app interactiva sigue en desarrollo.
